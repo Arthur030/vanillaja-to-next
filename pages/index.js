@@ -115,12 +115,9 @@ export default function Home() {
   }
 
   const onChange = async() => {
-    await play()
-    try{
+
       audioRef.current.currentTime = progressBarRef.current.value
-    } catch {
-      console.log('no')
-    }
+
   }
 
 
