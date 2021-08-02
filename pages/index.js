@@ -116,9 +116,9 @@ export default function Home() {
 
   const onChange = async() => {
 
-    await new Promise((resolve) => {
-      if(isPlaying) {
-         resolve()
+    return new Promise((resolve) => {
+      if(isPlaying && audioRef.current.readyState >= 2) {
+         resolve('resolved')
          audioRef.current.currentTime = progressBarRef.current.value
       }
     })
