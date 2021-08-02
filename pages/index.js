@@ -43,7 +43,7 @@ export default function Home() {
     setDuration(audioRef.current.duration)
     setCurrentTime(audioRef.current.currentTime)
   }, [])
-  
+
   const onLoadedMetadata = () => {
     console.log("onLoadedMetadata")
     setCurrentTime(audioRef.current.currentTime)
@@ -115,14 +115,15 @@ export default function Home() {
   }
 
   const onChange = async() => {
-    try {
-      console.log("onChange")
-      await play()
-      audioRef.current.currentTime = progressBarRef.current.value
 
-    } catch {
-      console.log("onChange catch err")
-    }
+    await new Promise((resolve) => {
+      if(isPlaying) {
+         resolve("yes")
+         audioRef.current.currentTime = progressBarRef.current.value
+      } else {
+        console.log('no')
+      }   
+    })
   }
 
 
