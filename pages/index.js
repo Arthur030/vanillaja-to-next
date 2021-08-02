@@ -114,14 +114,13 @@ export default function Home() {
     setCurrentTime(audioRef.current.currentTime)
   }
 
-  const onChange = async() => {
+  const onChange = () => {
+    setCurrentTime(audioRef.current.currentTime)
+    setDuration(audioRef.current.duration)
+    progressBarRef.current.max = audioRef.current.duration
+    audioRef.current.currentTime = progressBarRef.current.value
 
-    return new Promise((resolve) => {
-      if(isPlaying && audioRef.current.readyState >= 2) {
-         resolve('resolved')
-         audioRef.current.currentTime = progressBarRef.current.value
-      }
-    })
+
   }
 
 
