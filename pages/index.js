@@ -115,9 +115,14 @@ export default function Home() {
   }
 
   const onChange = async() => {
-    console.log("onChange")
-    await play()
-    audioRef.current.currentTime = progressBarRef.current.value
+    try {
+      console.log("onChange")
+      await play()
+      audioRef.current.currentTime = progressBarRef.current.value
+
+    } catch {
+      console.log("onChange catch err")
+    }
   }
 
 
