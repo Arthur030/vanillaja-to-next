@@ -11,7 +11,6 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
-  const [canPlay, setCanPlay] = useState(false)
 
   // current audio
   const audioRef = useRef()
@@ -23,7 +22,6 @@ export default function Home() {
 
   useEffect(() => {
     // did this to pause the first track on first load
-    console.log(canPlay)
     if(firstPausedRef.current) {
       play()
     } else {
@@ -32,7 +30,7 @@ export default function Home() {
   }, [tracksIndex])
   
   useEffect(() => {
-    console.log("useEffect on currentTime", canPlay)
+    console.log("useEffect on currentTime")
     progressBarRef.current.value = audioRef.current.currentTime
     // moves knobby to the percentage of the duration 
     progressBarRef.current.style.setProperty('--move-progressBar', `${audioRef.current.currentTime / audioRef.current.duration * 100}%`)
@@ -79,21 +77,12 @@ export default function Home() {
   
   const pause = async() => {
     try {
-      console.log(canPlay)
       setIsPlaying(false)
       audioRef.current.pause()
     } catch {
       console.log("pause promise failed, retrying...")
     }
     
-  }
-
-  const calculateTime = (secs) => {
-    const minutes = Math.floor(secs / 60);
-    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const seconds = Math.floor(secs % 60);
-    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    return `${returnedMinutes}:${returnedSeconds}`;
   }
 
   const next = () => {
@@ -112,12 +101,22 @@ export default function Home() {
     }
   }
 
+  const calculateTime = (secs) => {
+    const minutes = Math.floor(secs / 60);
+    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const seconds = Math.floor(secs % 60);
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    return `${returnedMinutes}:${returnedSeconds}`;
+  }
+
   const onTimeUpdate = ()  => {
     console.log('onTimeUpdate')
     setCurrentTime(audioRef.current.currentTime)
   }
 
-  const onChange = () => {
+  const onChange = async() => {
+    await play()
+    then.
     audioRef.current.currentTime = progressBarRef.current.value
   }
 
@@ -130,8 +129,6 @@ export default function Home() {
         preload="metadata"
         onLoadedMetadata={onLoadedMetadata}
         onTimeUpdate={onTimeUpdate}
-        onEnded={ () => () => setCanPlay(false)}
-        onCanPlayThrough={ () => setCanPlay(true)}
       ></audio>
       <div className="image-container">
         <Image className="img" 
