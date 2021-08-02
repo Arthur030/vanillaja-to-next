@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import {FaPlay, FaPause, FaBackward, FaForward } from 'react-icons/fa'
 import tracks from '../tracks'
+import Image from 'next/image'
 
 export default function Home() {
 
@@ -130,11 +131,13 @@ export default function Home() {
         onTimeUpdate={onTimeUpdate}
       ></audio>
       <div className="image-container">
-        <img className="img" 
+        <Image className="img" 
           height="250"
           width="250"
-          src={img}
-        ></img>
+          className="image" 
+          src={img} 
+          alt={`track art for ${title} by ${artist}`}
+        />
       </div>
       <div className="player-container">
       <h4 className="title">{title}</h4>
