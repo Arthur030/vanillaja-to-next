@@ -118,11 +118,9 @@ export default function Home() {
 
     await new Promise((resolve) => {
       if(isPlaying) {
-         resolve("yes")
+         resolve()
          audioRef.current.currentTime = progressBarRef.current.value
-      } else {
-        console.log('no')
-      }   
+      }
     })
   }
 
