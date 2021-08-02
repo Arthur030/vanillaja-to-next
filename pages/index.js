@@ -11,6 +11,7 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
+  const [canPlay, setCanPlay] = useState(false)
 
   // current audio
   const audioRef = useRef()
@@ -22,6 +23,7 @@ export default function Home() {
 
   useEffect(() => {
     // did this to pause the first track on first load
+    console.log(canPlay)
     if(firstPausedRef.current) {
       play()
     } else {
@@ -30,7 +32,7 @@ export default function Home() {
   }, [tracksIndex])
   
   useEffect(() => {
-    console.log("useEffect on currentTime")
+    console.log("useEffect on currentTime", canPlay)
     progressBarRef.current.value = audioRef.current.currentTime
     // moves knobby to the percentage of the duration 
     progressBarRef.current.style.setProperty('--move-progressBar', `${audioRef.current.currentTime / audioRef.current.duration * 100}%`)
@@ -77,6 +79,7 @@ export default function Home() {
   
   const pause = async() => {
     try {
+      console.log(canPlay)
       setIsPlaying(false)
       audioRef.current.pause()
     } catch {
@@ -127,6 +130,8 @@ export default function Home() {
         preload="metadata"
         onLoadedMetadata={onLoadedMetadata}
         onTimeUpdate={onTimeUpdate}
+        onEnded={ () => () => setCanPlay(false)}
+        onCanPlayThrough={ () => setCanPlay(true)}
       ></audio>
       <div className="image-container">
         <Image className="img" 
