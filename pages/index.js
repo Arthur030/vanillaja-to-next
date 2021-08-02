@@ -115,8 +115,8 @@ export default function Home() {
   }
 
   const onChange = async() => {
-    await play()
     console.log("onChange")
+    await play()
     audioRef.current.currentTime = progressBarRef.current.value
   }
 
@@ -134,7 +134,6 @@ export default function Home() {
         <Image className="img" 
           height="250"
           width="250"
-          className="image" 
           src={img} 
           alt={`track art for ${title} by ${artist}`}
         />
