@@ -24,6 +24,7 @@ export default function Home() {
     // did this to pause the first track on first load
     if(firstPausedRef.current) {
       play()
+      progressBarRef.current.max = audioRef.current.duration
     } else {
       firstPausedRef.current = true
     }
@@ -32,7 +33,6 @@ export default function Home() {
   useEffect(() => {
     console.log("useEffect on currentTime")
     progressBarRef.current.value = audioRef.current.currentTime
-    progressBarRef.current.max = audioRef.current.duration
     // moves knobby to the percentage of the duration 
     progressBarRef.current.style.setProperty('--move-progressBar', `${audioRef.current.currentTime / audioRef.current.duration * 100}%`)
   }, [currentTime])
@@ -115,12 +115,7 @@ export default function Home() {
   }
 
   const onChange = () => {
-    setCurrentTime(audioRef.current.currentTime)
-    setDuration(audioRef.current.duration)
-    progressBarRef.current.max = audioRef.current.duration
     audioRef.current.currentTime = progressBarRef.current.value
-
-
   }
 
 
