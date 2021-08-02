@@ -24,7 +24,6 @@ export default function Home() {
     // did this to pause the first track on first load
     if(firstPausedRef.current) {
       play()
-      progressBarRef.current.max = audioRef.current.duration
     } else {
       firstPausedRef.current = true
     }
@@ -36,14 +35,14 @@ export default function Home() {
     // moves knobby to the percentage of the duration 
     progressBarRef.current.style.setProperty('--move-progressBar', `${audioRef.current.currentTime / audioRef.current.duration * 100}%`)
   }, [currentTime])
-
+  
   // get duration on first load, onLoadedMetadata does not run 
   // on first load
   useEffect(() => {
     setDuration(audioRef.current.duration)
     setCurrentTime(audioRef.current.currentTime)
   }, [])
-
+  
   const onLoadedMetadata = () => {
     console.log("onLoadedMetadata")
     setCurrentTime(audioRef.current.currentTime)
@@ -65,16 +64,17 @@ export default function Home() {
       console.log('togglePlayPause() failed')
     }
   };
-
+  
   const play = async() => {
     try{
       setIsPlaying(true)
       audioRef.current.play()
+      progressBarRef.current.max = audioRef.current.duration
     } catch {
       console.log("play promise failed, retrying...")
     }
   }
-
+  
   const pause = async() => {
     try {
       setIsPlaying(false)
