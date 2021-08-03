@@ -160,18 +160,24 @@ export default function Home() {
         />
       </div>
       <div className="player-container">
-      <h4 className="title">{title}</h4>
-      <h5 className="artist">{artist}</h5>
+        <div className="track-info">
+      <h4 className="title">{title} -</h4>
+      
+      <h4 className="artist">{artist}</h4>
+        </div>
       <div className="button-container">
-        <div className="loader" ref={loader}></div>
-        <button className="prev" onClick={prev}><FaBackward /></button>
-        <button 
-        className="play" 
-        onClick={togglePlayPause}
-        >
-          {isPlaying ? <FaPause /> : <FaPlay />}
-        </button>
-        <button className="next" onClick={next}><FaForward /></button>
+        <div className="next-play-prev">
+          <div className="loader" ref={loader}></div>
+          <button className="prev" onClick={prev}><FaBackward /></button>
+          <button 
+          className="play" 
+          onClick={togglePlayPause}
+          >
+            {isPlaying ? <FaPause /> : <FaPlay />}
+          </button>
+          <button className="next" onClick={next}><FaForward /></button>
+        </div>
+
         <div className="volume-container">
         <button onClick={toggleMute}>
           {isMuted ? <FaVolumeUp /> : <FaVolumeMute />}
@@ -199,7 +205,6 @@ export default function Home() {
         <h5>{calculateTime(duration)}</h5>
       </div>
       </div>
-      <h1>vanillajs-to-next</h1>
     </div>
   )
 }
