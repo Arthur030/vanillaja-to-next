@@ -112,9 +112,9 @@ export default function Home() {
   const onChange = async() => {
     //
     if(progressBarRef.current.max == audioRef.current.duration) {
-      audioRef.current.currentTime = progressBarRef.current.value
       await play()
       setIsPlaying(true)
+      audioRef.current.currentTime = progressBarRef.current.value
     }
 
   }
