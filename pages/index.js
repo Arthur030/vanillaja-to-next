@@ -30,7 +30,6 @@ export default function Home() {
   }, [tracksIndex])
   
   useEffect(() => {
-    console.log("useEffect on currentTime")
     progressBarRef.current.value = audioRef.current.currentTime
     // moves knobby to the percentage of the duration 
     progressBarRef.current.style.setProperty('--move-progressBar', `${audioRef.current.currentTime / audioRef.current.duration * 100}%`)
@@ -44,7 +43,6 @@ export default function Home() {
   }, [])
   
   const onLoadedMetadata = () => {
-    console.log("onLoadedMetadata")
     setCurrentTime(audioRef.current.currentTime)
     setDuration(audioRef.current.duration)
     progressBarRef.current.value = audioRef.current.currentTime
@@ -58,31 +56,35 @@ export default function Home() {
       if (!prevState) {
         await play();
       } else {
-        await pause();
+        pause();
       }
     } catch (err) {
-      console.log('togglePlayPause() failed')
+      console.log(err, 'togglePlayPause() failed')
     }
   };
   
   const play = async() => {
-    try{
-      setIsPlaying(true)
-      audioRef.current.play()
+    let playPromise = audioRef.current.play()
+    if(playPromise !== undefined) {
+      playPromise.then(_ => {
       progressBarRef.current.max = audioRef.current.duration
-    } catch {
-      console.log("play promise failed, retrying...")
+      })
+      .catch(error => {
+        console.log(error, 'playPromise failed, retrying..')
+      })
     }
+    // try{
+    //   setIsPlaying(true)
+    //   audioRef.current.play()
+      
+    // } catch {
+    //   console.log("play promise failed, retrying...")
+    // }
   }
   
-  const pause = async() => {
-    try {
+  const pause = () => {
       setIsPlaying(false)
       audioRef.current.pause()
-    } catch {
-      console.log("pause promise failed, retrying...")
-    }
-    
   }
 
   const next = () => {
@@ -110,12 +112,11 @@ export default function Home() {
   }
 
   const onTimeUpdate = ()  => {
-    console.log('onTimeUpdate')
     setCurrentTime(audioRef.current.currentTime)
   }
 
   const onChange = async() => {
-    pause()
+    //
     await play()
     audioRef.current.currentTime = progressBarRef.current.value
 
