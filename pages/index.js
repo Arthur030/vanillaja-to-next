@@ -1,6 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react'
-import {FaPlay, FaPause, FaBackward, FaForward } from 'react-icons/fa'
+import {FaPlay, FaPause, FaBackward, FaForward, FaVolumeUp, FaVolumeMute } from 'react-icons/fa'
 import tracks from '../tracks'
 import Image from 'next/image'
 
@@ -8,14 +8,19 @@ export default function Home() {
 
   // Index of the track
   const [tracksIndex, setTracksIndex] = useState(0)
+  // play() set it to true 
+  // pause() and useEffect on tracksIndex set it to false
   const [isPlaying, setIsPlaying] = useState(false)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
+  //toggle mute or unMute
+  const [isMuted, setIsMuted] = useState(true);
 
   // current audio
   const audioRef = useRef()
   const firstPausedRef = useRef()
   const progressBarRef = useRef()
+  const volume = useRef();
   const loader = useRef()
 
   // playlist
@@ -40,7 +45,6 @@ export default function Home() {
   // get duration on first load, onLoadedMetadata does not run 
   // on first load
   useEffect(() => {
-    console.log(progressBarRef.current.max,progressBarRef.current, 'progressBarRef', audioRef.current.duration)
     setDuration(audioRef.current.duration)
     setCurrentTime(audioRef.current.currentTime)
     progressBarRef.current.value = audioRef.current.currentTime
@@ -75,7 +79,6 @@ export default function Home() {
         setIsPlaying(true)
         progressBarRef.current.max = audioRef.current.duration
         loader.current.style.setProperty('display', 'none')
-
       })
       .catch(error => {
         console.log(error, 'playPromise failed, retrying..')
@@ -125,6 +128,18 @@ export default function Home() {
 
   }
 
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+    if (!isMuted) {
+      audioRef.current.volume = volume.current.value / 100;
+    } else {
+      audioRef.current.volume = 0;
+    }
+  };
+
+  const changeVolume = () => {
+    audioRef.current.volume = volume.current.value / 100;
+  }
 
   return (
     <div className="App">
@@ -157,6 +172,20 @@ export default function Home() {
           {isPlaying ? <FaPause /> : <FaPlay />}
         </button>
         <button className="next" onClick={next}><FaForward /></button>
+        <div className="volume-container">
+        <button onClick={toggleMute}>
+          {isMuted ? <FaVolumeUp /> : <FaVolumeMute />}
+        </button>
+        <input 
+          type="range"
+          className="volume-bar"
+          min="0"
+          max="100"
+          defaultValue="50"
+          ref={volume}
+          onChange={changeVolume}
+          />
+      </div>
       </div>
       <input 
       type="range"
