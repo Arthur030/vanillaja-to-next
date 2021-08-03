@@ -22,12 +22,16 @@ export default function Home() {
 
   useEffect(() => {
     pause()
-    // did this to show pause the first track on first load
-    if(firstPausedRef.current) {
-      play()
-    } else {
-      firstPausedRef.current = true
+    // trying to make it wait on play() to return promise
+    const playPromise = async() => {
+      // did this to show pause the first track on first load
+      if(firstPausedRef.current) {
+        await play()
+      } else {
+        firstPausedRef.current = true
+      }
     }
+    playPromise()
   }, [tracksIndex])
   
   useEffect(() => {
@@ -47,7 +51,7 @@ export default function Home() {
     setCurrentTime(audioRef.current.currentTime)
     setDuration(audioRef.current.duration)
     progressBarRef.current.value = audioRef.current.currentTime
-    progressBarRef.current.max = audioRef.current.duration
+    // progressBarRef.current.max = audioRef.current.duration
   }
   
   const togglePlayPause = async() => {
@@ -119,12 +123,10 @@ export default function Home() {
 
   const onChange = async() => {
     //
-    if(audioRef) {
+    if(progressBarRef.current.max == audioRef.current.duration) {
       audioRef.current.currentTime = progressBarRef.current.value
       await play()
       setIsPlaying(true)
-    } else {
-      await play()
     }
 
   }
