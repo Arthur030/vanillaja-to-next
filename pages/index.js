@@ -21,17 +21,12 @@ export default function Home() {
   const {title, artist, audio, img} = tracks[tracksIndex]
 
   useEffect(() => {
-    pause()
-    // trying to make it wait on play() to return promise
-    const playPromise = async() => {
       // did this to show pause the first track on first load
       if(firstPausedRef.current) {
-        await play()
+        play()
       } else {
         firstPausedRef.current = true
       }
-    }
-    playPromise()
   }, [tracksIndex])
   
   useEffect(() => {
@@ -73,19 +68,12 @@ export default function Home() {
     if(playPromise !== undefined) {
       playPromise.then(_ => {
         setIsPlaying(true)
-      progressBarRef.current.max = audioRef.current.duration
+        progressBarRef.current.max = audioRef.current.duration
       })
       .catch(error => {
         console.log(error, 'playPromise failed, retrying..')
       })
     }
-    // try{
-    //   setIsPlaying(true)
-    //   audioRef.current.play()
-      
-    // } catch {
-    //   console.log("play promise failed, retrying...")
-    // }
   }
   
   const pause = () => {
