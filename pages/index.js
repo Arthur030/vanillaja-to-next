@@ -16,17 +16,19 @@ export default function Home() {
   const audioRef = useRef()
   const firstPausedRef = useRef()
   const progressBarRef = useRef()
+  const loader = useRef()
 
   // playlist
   const {title, artist, audio, img} = tracks[tracksIndex]
 
   useEffect(() => {
-      // did this to show pause the first track on first load
-      if(firstPausedRef.current) {
-        play()
-      } else {
-        firstPausedRef.current = true
-      }
+    setIsPlaying(false)
+    // did this to show pause the first track on first load
+    if(firstPausedRef.current) {
+      play()
+    } else {
+      firstPausedRef.current = true
+    }
   }, [tracksIndex])
   
   useEffect(() => {
@@ -38,8 +40,10 @@ export default function Home() {
   // get duration on first load, onLoadedMetadata does not run 
   // on first load
   useEffect(() => {
+    console.log(progressBarRef.current.max,progressBarRef.current, 'progressBarRef', audioRef.current.duration)
     setDuration(audioRef.current.duration)
     setCurrentTime(audioRef.current.currentTime)
+    progressBarRef.current.value = audioRef.current.currentTime
   }, [])
   
   const onLoadedMetadata = () => {
@@ -64,11 +68,14 @@ export default function Home() {
   };
   
   const play = async() => {
+    loader.current.style.setProperty('display', 'block')
     let playPromise = audioRef.current.play()
     if(playPromise !== undefined) {
       playPromise.then(_ => {
         setIsPlaying(true)
         progressBarRef.current.max = audioRef.current.duration
+        loader.current.style.setProperty('display', 'none')
+
       })
       .catch(error => {
         console.log(error, 'playPromise failed, retrying..')
@@ -112,9 +119,8 @@ export default function Home() {
   const onChange = async() => {
     //
     if(progressBarRef.current.max == audioRef.current.duration) {
-      await play()
-      setIsPlaying(true)
       audioRef.current.currentTime = progressBarRef.current.value
+      await play()
     }
 
   }
@@ -142,6 +148,7 @@ export default function Home() {
       <h4 className="title">{title}</h4>
       <h5 className="artist">{artist}</h5>
       <div className="button-container">
+        <div className="loader" ref={loader}></div>
         <button className="prev" onClick={prev}><FaBackward /></button>
         <button 
         className="play" 
