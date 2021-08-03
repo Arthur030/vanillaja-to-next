@@ -26,19 +26,19 @@ export default function Home() {
   // playlist
   const {title, artist, audio, img} = tracks[tracksIndex]
 
-  useEffect(() => {
-    setIsPlaying(false)
-    // did this to show pause the first track on first load
-    if(firstPausedRef.current) {
-      play()
-    } else {
-      firstPausedRef.current = true
-    }
-  }, [tracksIndex])
+  // useEffect(() => {
+  //   setIsPlaying(false)
+  //   // did this to show pause the first track on first load
+  //   if(firstPausedRef.current) {
+  //     play()
+  //   } else {
+  //     firstPausedRef.current = true
+  //   }
+  // }, [tracksIndex])
   
   useEffect(() => {
     progressBarRef.current.value = audioRef.current.currentTime
-    // moves knobby to the percentage of the duration 
+    // moves knobby to the percentage of the currentTime to duration
     progressBarRef.current.style.setProperty('--move-progressBar', `${audioRef.current.currentTime / audioRef.current.duration * 100}%`)
   }, [currentTime])
   
@@ -91,28 +91,40 @@ export default function Home() {
     setIsPlaying(false)
   }
 
-  const next = () => {
+  const next = async() => {
     if (tracksIndex < tracks.length - 1) {
-      setTracksIndex(tracksIndex + 1);
+      setTracksIndex(tracksIndex + 1)
     } else {
-      setTracksIndex(0);
+      setTracksIndex(0)
     }
   }
 
-  const prev = () => {
+  const prev = async() => {
     if (tracksIndex -1 < 0) {
-      setTracksIndex(tracks.length -1);
+      setTracksIndex(tracks.length -1)
+      await changeTrack()
     } else {
-      setTracksIndex(tracksIndex - 1);
+      setTracksIndex(tracksIndex - 1)
+      await changeTrack()
+    }
+  }
+
+  const changeTrack = async() => {
+    setIsPlaying(false)
+    // did this to show pause the first track on first load
+    if(firstPausedRef.current) {
+      await play()
+    } else {
+      firstPausedRef.current = true
     }
   }
 
   const calculateTime = (secs) => {
-    const minutes = Math.floor(secs / 60);
-    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const seconds = Math.floor(secs % 60);
-    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    return `${returnedMinutes}:${returnedSeconds}`;
+    const minutes = Math.floor(secs / 60)
+    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+    const seconds = Math.floor(secs % 60)
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`
+    return `${returnedMinutes}:${returnedSeconds}`
   }
 
   const onTimeUpdate = ()  => {
@@ -129,16 +141,16 @@ export default function Home() {
   }
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    setIsMuted(!isMuted)
     if (!isMuted) {
-      audioRef.current.volume = volume.current.value / 100;
+      audioRef.current.volume = volume.current.value / 100
     } else {
-      audioRef.current.volume = 0;
+      audioRef.current.volume = 0
     }
   };
 
   const changeVolume = () => {
-    audioRef.current.volume = volume.current.value / 100;
+    audioRef.current.volume = volume.current.value / 100
   }
 
   return (
