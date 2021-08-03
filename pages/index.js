@@ -26,15 +26,15 @@ export default function Home() {
   // playlist
   const {title, artist, audio, img} = tracks[tracksIndex]
 
-  // useEffect(() => {
-  //   setIsPlaying(false)
-  //   // did this to show pause the first track on first load
-  //   if(firstPausedRef.current) {
-  //     play()
-  //   } else {
-  //     firstPausedRef.current = true
-  //   }
-  // }, [tracksIndex])
+  useEffect(() => {
+    setIsPlaying(false)
+    // did this to show pause the first track on first load
+    if(firstPausedRef.current) {
+      play()
+    } else {
+      firstPausedRef.current = true
+    }
+  }, [tracksIndex])
   
   useEffect(() => {
     progressBarRef.current.value = audioRef.current.currentTime
@@ -99,23 +99,11 @@ export default function Home() {
     }
   }
 
-  const prev = async() => {
+  const prev = () => {
     if (tracksIndex -1 < 0) {
       setTracksIndex(tracks.length -1)
-      await changeTrack()
     } else {
       setTracksIndex(tracksIndex - 1)
-      await changeTrack()
-    }
-  }
-
-  const changeTrack = async() => {
-    setIsPlaying(false)
-    // did this to show pause the first track on first load
-    if(firstPausedRef.current) {
-      await play()
-    } else {
-      firstPausedRef.current = true
     }
   }
 
