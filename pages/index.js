@@ -21,7 +21,8 @@ export default function Home() {
   const {title, artist, audio, img} = tracks[tracksIndex]
 
   useEffect(() => {
-    // did this to pause the first track on first load
+    pause()
+    // did this to show pause the first track on first load
     if(firstPausedRef.current) {
       play()
     } else {
@@ -67,6 +68,7 @@ export default function Home() {
     let playPromise = audioRef.current.play()
     if(playPromise !== undefined) {
       playPromise.then(_ => {
+        setIsPlaying(true)
       progressBarRef.current.max = audioRef.current.duration
       })
       .catch(error => {
@@ -83,8 +85,8 @@ export default function Home() {
   }
   
   const pause = () => {
-      setIsPlaying(false)
-      audioRef.current.pause()
+    audioRef.current.pause()
+    setIsPlaying(false)
   }
 
   const next = () => {
@@ -136,6 +138,7 @@ export default function Home() {
         preload="metadata"
         onLoadedMetadata={onLoadedMetadata}
         onTimeUpdate={onTimeUpdate}
+        onEnded={next}
       ></audio>
       <div className="image-container">
         <Image className="img" 
