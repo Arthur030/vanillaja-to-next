@@ -175,7 +175,7 @@ export default function Home() {
           className="play" 
           onClick={togglePlayPause}
           >
-            {isPlaying ? <FaPause /> : <FaPlay />}
+            {isPlaying ? <FaPause className="svg-pause"/> : <FaPlay className="svg-play"/>}
           </button>
           <button className="next" onClick={next}><FaForward /></button>
         </div>
