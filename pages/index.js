@@ -166,8 +166,10 @@ export default function Home() {
       <h4 className="artist">{artist}</h4>
         </div>
       <div className="button-container">
-        <div className="next-play-prev">
+        <div className="button-filler">
           <div className="loader" ref={loader}></div>
+        </div>
+        <div className="next-play-prev">
           <button className="prev" onClick={prev}><FaBackward /></button>
           <button 
           className="play" 
@@ -179,7 +181,7 @@ export default function Home() {
         </div>
 
         <div className="volume-container">
-        <button onClick={toggleMute}>
+        <button className="volume-button" onClick={toggleMute}>
           {isMuted ? <FaVolumeUp /> : <FaVolumeMute />}
         </button>
         <input 
@@ -193,6 +195,7 @@ export default function Home() {
           />
       </div>
       </div>
+      <div className="input-div">
       <input 
       type="range"
       defaultValue="0"
@@ -200,6 +203,7 @@ export default function Home() {
       ref={progressBarRef}
       onChange={onChange}
       ></input>
+      </div>
       <div className="time-container">
         <h5>{calculateTime(currentTime)}</h5>
         <h5>{calculateTime(duration)}</h5>

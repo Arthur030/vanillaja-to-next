@@ -103,27 +103,163 @@
     display: flex;
     align-items: center;
     height: 50px;
-    padding-bottom: 5px;
+    padding-bottom: 20px;
   }
   .play,.pause,.next,.prev {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
+  }
+  .play svg,.pause svg,.next svg,.prev svg, .volume-button svg {
+    height: 2em;
+    width: 2em;
+  }
+  .button-filler {
+    width: 33%;
   }
   .volume-container {
+    width: 33%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
   }
-  .next-play-prev {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    padding-left: 16%;
+  .volume-button {
+    border: 2px solid;
+    border-radius: 50%;
   }
+  .next-play-prev {
+    display: flex;
+    justify-content: space-around;
+    width: 33%;
+    display: flex;
+  }
+
+  .play {
+    border: 2px solid;
+    border-radius: 50%;
+  }
+  .next,.prev {
+    border: none;
+    background-color: rgb(226, 232, 240);
+  }
+
   h4 {
     font-size: 2em;
   }
   h5 {
     font-size: 1.4em;
   }
+  .volume-bar {
+    display: none;
+  }
+  .volume-container button {
+    width: 50px;
+    height: 50px;
+  }
+  .progress-bar {
+    -webkit-appearance: none;
+    background-color: rgb(226, 232, 240);
+    border-radius: 20px;
+    border: none;
+  }
+
+  /* Progress Bar */
+    /* CHROME */
+    .progress-bar{
+      -webkit-appearance: none;
+    }
+  
+    .progress-bar::-webkit-slider-runnable-track {
+        height: 20px;
+        background: #ddd;
+        border: none;
+        border-radius: 3px;
+    }
+
+    .progress-bar::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        background: goldenrod;
+        margin-top: -4px;
+    }
+  
+    .progress-bar:focus {
+        outline: none;
+    }
+
+    .progress-bar:focus::-webkit-slider-runnable-track {
+        background: #ccc;
+    }
+  /* FIREFOX */
+    /* .progress-bar{
+      /* fix for FF unable to apply focus style bug  */
+      /* border: 1px solid white;  */
+
+      /*required for proper track sizing in FF*/
+      /* width: 300px; */
+    /* }  */
+
+    .progress-bar::-moz-range-track {
+      /* width: 300px; */
+      height: 5px;
+      background: #ddd;
+      border: none;
+      border-radius: 3px;
+    }
+
+    .progress-bar::-moz-range-thumb {
+      border: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: goldenrod;
+    }
+
+    /*hide the outline behind the border*/
+    .progress-bar:-moz-focusring{
+        outline: 1px solid white;
+        outline-offset: -1px;
+    }
+
+    .progress-bar:focus::-moz-range-track {
+        background: #ccc;
+    }
+    /* EXPLORER */
+    .progress-bar::-ms-track {
+      /* width: 300px; */
+      height: 5px;
+
+      /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+      background: transparent;
+
+      /*leave room for the larger thumb to overflow with a transparent border */
+      border-color: transparent;
+      border-width: 6px 0;
+
+      /*remove default tick marks*/
+      color: transparent;
+    }
+    .progress-bar::-ms-fill-lower {
+      background: #777;
+      border-radius: 10px;
+    }
+    .progress-bar::-ms-fill-upper {
+      background: #ddd;
+      border-radius: 10px;
+    }
+    .progress-bar::-ms-thumb {
+      border: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: goldenrod;
+    }
+    .progress-bar:focus::-ms-fill-lower {
+      background: #888;
+    }
+    .progress-bar:focus::-ms-fill-upper {
+      background: #ccc;
+    }
 }
